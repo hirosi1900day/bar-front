@@ -1,7 +1,6 @@
 'use server';
 
-import { Task, TaskModel } from '@/models/task';
-import { connectDb } from '@/utils/database';
+import { Task } from '@/models/task';
 import { redirect } from 'next/navigation';
 
 export interface FormState {
@@ -10,19 +9,12 @@ export interface FormState {
 
 export const createTask = async (state: FormState, formData: FormData) => {
   const newTask: Task = {
+    id: '1',
     title: formData.get('title') as string,
     description: formData.get('description') as string,
     dueDate: formData.get('dueDate') as string,
-    isCompleted: false,
+    isCompleted: false
   };
-
-  try {
-    await connectDb();
-    await TaskModel.create(newTask);
-  } catch (error) {
-    state.error = 'タスクの作成に失敗しました';
-    return state;
-  }
 
   redirect('/');
 };
@@ -33,15 +25,14 @@ export const updateTask = async (
   formData: FormData
 ) => {
   const updateTask: Task = {
+    id: '2',
     title: formData.get('title') as string,
     description: formData.get('description') as string,
     dueDate: formData.get('dueDate') as string,
     isCompleted: Boolean(formData.get('isCompleted')),
   };
-
+  console.log(updateTask);
   try {
-    await connectDb();
-    await TaskModel.updateOne({ _id: id }, updateTask);
   } catch (error) {
     state.error = 'タスクの更新に失敗しました';
     return state;
@@ -52,8 +43,7 @@ export const updateTask = async (
 
 export const deleteTask = async (id: string, state: FormState) => {
   try {
-    await connectDb();
-    await TaskModel.deleteOne({ _id: id });
+    // delete
   } catch (error) {
     state.error = 'タスクの削除に失敗しました';
     return state;

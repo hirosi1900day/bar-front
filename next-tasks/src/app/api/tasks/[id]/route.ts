@@ -1,15 +1,18 @@
-import { TaskModel } from '@/models/task';
-import { connectDb } from '@/utils/database';
 import { NextRequest, NextResponse } from 'next/server';
+import { TaskDocument } from '@/models/task';
 
 export const GET = async (
   _: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
-    await connectDb();
-    const task = await TaskModel.findById(params.id);
-
+    const task = {
+      id: params.id,
+      title: 'task',
+      description: 'task',
+      dueDate: '2022-01-01',
+      isCompleted: false,
+    } as TaskDocument;
     if (!task) {
       return NextResponse.json(
         { message: 'タスクが存在しません' },

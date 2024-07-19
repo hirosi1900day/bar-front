@@ -12,27 +12,3 @@ export interface TaskDocument extends Task {
   createdAt: Date;
   updatedAt: Date;
 }
-
-const taskSchema = new mongoose.Schema<TaskDocument>(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-    },
-    dueDate: {
-      type: String,
-      required: true,
-    },
-    isCompleted: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { timestamps: true }
-);
-
-export const TaskModel =
-  mongoose.models.Task || mongoose.model('Task', taskSchema);

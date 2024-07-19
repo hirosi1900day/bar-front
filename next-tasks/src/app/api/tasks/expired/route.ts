@@ -1,5 +1,4 @@
-import { TaskDocument, TaskModel } from '@/models/task';
-import { connectDb } from '@/utils/database';
+import { TaskDocument } from '@/models/task';
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
@@ -9,11 +8,17 @@ export const GET = async () => {
     day: '2-digit',
   }).replace(/\//g, '-');
   try {
-    await connectDb();
-    const completedTasks: TaskDocument[] = await TaskModel.find({
-      isCompleted: false,
-      dueDate: { $lt: currentDate },
-    });
+    const completedTasks: TaskDocument[] = [
+      {
+        id: '1',
+        title: 'task',
+        description: 'task',
+        dueDate: currentDate,
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    ]
 
     return NextResponse.json({ message: 'タスク取得成功', tasks: completedTasks });
   } catch (error) {

@@ -1,11 +1,19 @@
-import { TaskDocument, TaskModel } from '@/models/task';
-import { connectDb } from '@/utils/database';
 import { NextResponse } from 'next/server';
+import { TaskDocument } from '@/models/task';
 
 export const GET = async () => {
   try {
-    await connectDb();
-    const allTasks: TaskDocument[] = await TaskModel.find();
+    const allTasks: TaskDocument[] = [
+      {
+        id: '1',
+        title: 'task',
+        description: 'task',
+        dueDate: '2022-01-01',
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    ]
 
     return NextResponse.json({ message: 'タスク取得成功', tasks: allTasks });
   } catch (error) {
