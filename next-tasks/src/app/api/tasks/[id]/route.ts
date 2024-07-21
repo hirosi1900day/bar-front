@@ -11,6 +11,10 @@ type ErrorResponse = {
   message: string;
 }
 
+const createErrorResponse = (message: string, status: number) => {
+  return NextResponse.json({ message }, { status });
+};
+
 export const GET = async (
   _: NextRequest,
   { params }: { params: { id: string } }
@@ -22,19 +26,16 @@ export const GET = async (
 
     const task = await response.json();
 
-    if (response.status == 404 ) {
-      return NextResponse.json(
-        { message: 'タスクが存在しません' },
-        { status: 404 }
-      );
+    if (!response.ok) {
+      const errorMessages: { [key: number]: string } = {
+        404: 'タスクが存在しません',
+        400: 'クライアントエラー',
+        500: 'サーバーエラー',
+      };
+
+      return createErrorResponse(errorMessages[response.status] || 'エラーが発生しました', response.status);
     }
 
-    if (response.status == 400 ) {
-      return NextResponse.json(
-        { message: 'クライアントエラー' },
-        { status: 400 }
-      );
-    }
     return NextResponse.json({ message: 'タスク取得成功', task });
   } catch (error) {
     return NextResponse.json({ message: 'タスク取得失敗' }, { status: 500 });
