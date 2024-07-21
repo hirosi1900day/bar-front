@@ -4,22 +4,26 @@ import Link from 'next/link';
 import { MdAddTask } from 'react-icons/md';
 
 const getAllTasks = async (): Promise<TaskDocument[]> => {
-  // const response = await fetch(`${process.env.API_URL}/tasks`, {
-  //   cache: 'no-store',
-  // });
+  try {
+    const response = await fetch(`${process.env.API_URL}/tasks`, {
+      cache: 'no-store',
+    });
 
-  // if (response.status !== 200) {
-  //   throw new Error();
-  // }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tasks: ${response.status} ${response.statusText}`);
+    }
 
-  // const data = await response.json();
-  return [{
-    title: 'test',
-    description: 'test',
-    dueDate: '2022-01-01',
-    isCompleted: false,
-    id: '1',
-  }] as TaskDocument[];
+    const { tasks } = await response.json();
+    
+    if (!tasks || !Array.isArray(tasks)) {
+      throw new Error('Invalid response format');
+    }
+    
+    return tasks as TaskDocument[];
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    throw new Error('Failed to fetch tasks');
+  }
 };
 
 export default async function MainPage() {
