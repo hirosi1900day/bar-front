@@ -13,13 +13,13 @@ const getAllTasks = async (): Promise<TaskDocument[]> => {
       throw new Error(`Failed to fetch tasks: ${response.status} ${response.statusText}`);
     }
 
-    const { tasks } = await response.json();
+    const { tasks: { data } } = await response.json();
     
-    if (!tasks || !Array.isArray(tasks)) {
+    if (!data || !Array.isArray(data)) {
       throw new Error('Invalid response format');
     }
     
-    return tasks as TaskDocument[];
+    return data as TaskDocument[];
   } catch (error) {
     console.error('Error fetching tasks:', error);
     throw new Error('Failed to fetch tasks');

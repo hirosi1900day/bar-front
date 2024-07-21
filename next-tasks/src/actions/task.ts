@@ -31,7 +31,6 @@ export const updateTask = async (
     dueDate: formData.get('dueDate') as string,
     isCompleted: Boolean(formData.get('isCompleted')),
   };
-  console.log(updateTask);
   try {
   } catch (error) {
     state.error = 'タスクの更新に失敗しました';

@@ -6,18 +6,20 @@ interface Params {
 }
 
 const getTask = async (id: string): Promise<TaskDocument> => {
-  // const response = await fetch(`${process.env.API_URL}/tasks/${id}`, {
-  //   cache: 'no-store',
-  // });
+  try {
+    const response = await fetch(`${process.env.API_URL}/tasks/${id}`, { cache: 'no-store' });
 
-  // const data = await response.json();
-  return {
-    id: '1',
-    title: 'test',
-    description: 'test',
-    dueDate: '2022-01-01',
-    isCompleted: false,
-  } as TaskDocument;
+    if (!response.ok) {
+      throw new Error(`Error fetching task with id ${id}: ${response.statusText}`);
+    }
+
+    const { task: { data } } = await response.json();
+    
+    return data as TaskDocument;
+  } catch (error) {
+    console.error('Error in getTask:', error);
+    throw error; // Re-throw the error after logging it
+  }
 };
 
 const EditTaskPage = async ({ params }: Params) => {
