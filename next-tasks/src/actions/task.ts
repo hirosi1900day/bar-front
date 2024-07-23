@@ -16,6 +16,23 @@ export const createTask = async (state: FormState, formData: FormData) => {
     isCompleted: false
   };
 
+  try {
+    const response = await fetch(`${process.env.SERVER_URL}/tasks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newTask),
+    });
+
+    if (!response.ok) {
+      state.error = 'タスクの作成に失敗しました';
+      return state;
+    }
+  } catch (error) {
+    state.error = 'タスクの作成に失敗しました';
+    return state;
+  }
   redirect('/');
 };
 
