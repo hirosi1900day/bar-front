@@ -80,7 +80,6 @@ const EditTaskForm: React.FC<EditTaskFormProps> = ({ task }) => {
             max="2999-12-31"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            required
             className="block mt-2 py-1.5 px-2 w-full rounded-md border-0 
           shadow-sm ring-1 ring-inset ring-gray-300"
           />

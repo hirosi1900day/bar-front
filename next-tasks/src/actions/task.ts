@@ -41,14 +41,24 @@ export const updateTask = async (
   state: FormState,
   formData: FormData
 ) => {
-  const updateTask: Task = {
-    id: '2',
-    title: formData.get('title') as string,
-    description: formData.get('description') as string,
-    dueDate: formData.get('dueDate') as string,
-    isCompleted: Boolean(formData.get('isCompleted')),
-  };
   try {
+    const response = await fetch(`${process.env.SERVER_URL}/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        dueDate: formData.get('dueDate'),
+        status: formData.get('isCompleted') == 'on' ?  2 : 0,
+      }),
+    });
+
+    if (!response.ok) {
+      state.error = 'タスクの更新に失敗しました';
+      return state;
+    }
   } catch (error) {
     state.error = 'タスクの更新に失敗しました';
     return state;
