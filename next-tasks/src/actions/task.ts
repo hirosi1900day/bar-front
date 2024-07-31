@@ -70,6 +70,14 @@ export const updateTask = async (
 export const deleteTask = async (id: string, state: FormState) => {
   try {
     // delete
+    const response = await fetch(`${process.env.SERVER_URL}/tasks/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      state.error = 'タスクの削除に失敗しました';
+      return state;
+    }
   } catch (error) {
     state.error = 'タスクの削除に失敗しました';
     return state;
